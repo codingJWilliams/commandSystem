@@ -10,26 +10,26 @@ class maths():
 
     def add():
         print("Enter the two numbers to Add")
-        A = float(input("Enter A: "))
-        B = float(input("Enter B: "))
+        A = float(input("a>"))
+        B = float(input("b>"))
         return A + B 
 
     def sub():
         print("Enter the two numbers to Subtract")
-        A = float(input("Enter A: "))
-        B = float(input("Enter B: "))
+        A = float(input("a>"))
+        B = float(input("b>"))
         return A - B
 
     def mul():
         print("Enter the two numbers to Multiply")
-        A = float(input("Enter A: "))
-        B = float(input("Enter B: "))
+        A = float(input("a>"))
+        B = float(input("b>"))
         return A * B
 
     def div():
         print("Enter the two number to Divide")
-        A = float(input("Enter A: "))
-        B = float(input("Enter B: "))
+        A = float(input("a>"))
+        B = float(input("b>"))
         return A / B
 
     def calc():
