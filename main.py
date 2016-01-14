@@ -43,7 +43,7 @@ def commandAssignment(logit):
 
 # Body of program
 
-debug = True
+debug = False
 # A program designed to emulate a windows pc.
 def getHelp():
     print(" +----+ [ Help Prompt ] +----+ ")
@@ -62,7 +62,8 @@ class auth():
         username = input("\n\n +----+ Secure login prompt +----+\nUsername >")
         try:
             logins[username][1]
-            print("Got hash from DB")
+            if debug:
+                print("Got hash from DB")
         except KeyError:
             print("Incorrect username.\n +----+ [              ] +----+")
             return False
@@ -71,7 +72,8 @@ class auth():
         else:
             print("Username correct.")
             userpasshash = hashlib.sha256(str(input("Password >")).encode('utf-8')).hexdigest()
-            print("passhash = {0}".format(userpasshash))
+            if debug:
+                print("passhash = {0}".format(userpasshash))
             if userpasshash == logins[username][1]:
                 print(" +----+      Thank You!      +----+")
                 return logins[username][0]
