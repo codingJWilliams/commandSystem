@@ -3,6 +3,7 @@ import time
 import hashlib
 import json
 import mathslibrary
+import lottery
 
 
 #Below is where you assign commands, so you can easily add commands in the format demonstrated
@@ -11,15 +12,29 @@ def commandAssignment(logit):
     if cmd.lower() == 'logout':
         return True
     elif cmd.lower() == 'exit':
-        exit
+        return "exit"
     elif cmd.lower() == 'calc':
-        mathslibrary.calc()
+        try:
+            mathslibrary.calc()
+        except:
+            print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'adduser':
-        auth.adduser()
+        try:
+            auth.adduser()
+        except:
+            print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'auth':
-        print("Logged in as {0}".format(auth.auth()))
+        try:
+            print("Logged in as {0}".format(auth.auth()))
+        except:
+            print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'help':
         getHelp()
+    elif cmd.lower() == 'lottery':
+        try:
+            lottery.mainProgram()
+        except:
+            print("error> Program crashed. Returning to prompt.")
     else:
         print('Invalid command! Try typing \"help\"')
 
@@ -82,12 +97,15 @@ def pc(frrun):
         #user is authed
         print("\nPlease enter a command!") 
         while True:
-            if commandAssignment(login):
+            answer = commandAssignment(login)
+            if answer == True:
                 break
+            elif answer == "exit":
+                quit()
     elif login is False:
         #user is not authed
         print("Login Insuccessful")
-        quit
+        quit()
 pc(1)
 while True:
     pc(0)
