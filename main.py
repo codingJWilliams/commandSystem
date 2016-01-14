@@ -13,7 +13,7 @@ class auth():
             if debug:
                 print("Logins = {0} at read".format(s))
             f.close()
-        username = input(" +----+ Secure login prompt +----+\nUsername >")
+        username = input("\n\n +----+ Secure login prompt +----+\nUsername >")
         try:
             logins[username][1]
             print("Got hash from DB")
@@ -39,20 +39,23 @@ class auth():
             f.close()
         print()
         username = input("Please choose a username!\nusername>")
-        logins[username] = [username]
-        logins[username][1] = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
+        passwdhash = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
+        logins[username] = [username, passwdhash]
         outfile = open("logins.json", "w")
         outfile.write(json.dumps(logins))
-def pc():
-    print("Welcome to this computer-style program. \n\n\n")
+def pc(frrun):
+    if frrun == 1:
+        print("Welcome to this computer-style program. \n\n\n")
     login = auth.auth()
     if login is not False:
         #user is authed
         print("\nPlease enter a command!") 
         while True:
             cmd = input("{0}>".format(login))
-            if cmd.lower() == 'exit':
+            if cmd.lower() == 'logout':
                 break
+            elif cmd.lower() == 'exit':
+                exit
             elif cmd.lower() == 'calc':
                 mathslibrary.calc()
             elif cmd.lower() == 'adduser':
@@ -62,5 +65,7 @@ def pc():
     elif login is False:
         #user is not authed
         print("Login Incorrect")
-pc()
+pc(1)
+while True:
+    pc(0)
 
