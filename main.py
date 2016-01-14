@@ -34,7 +34,7 @@ class auth():
             f.close()
         print()
         username = input("Please choose a username!\nusername>")
-        logins[username] = input("Please choose a password!\npassword>")
+        logins[username] = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
         outfile = open("logins.json", "w")
         outfile.write(json.dumps(logins))
 def pc():
