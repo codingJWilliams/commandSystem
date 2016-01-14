@@ -32,16 +32,16 @@ def calc():
 
     if CHOICE == 1: 
         print('ADDING TWO NUMBERS:')
-        print(round(maths.add(), 5))
+        print(round(add(), 5))
     elif CHOICE == 2:
         print('SUBTRACTING TWO NUMBERS')
-        print(round(maths.sub(), 5))
+        print(round(sub(), 5))
     elif CHOICE == 3:
         print('MULTIPLYING TWO NUMBERS')
-        print(round(maths.mul(), 5))
+        print(round(mul(), 5))
     elif CHOICE == 4:
         print("DIVIDING TWO NUMBERS")
-        print(round(maths.div(), 5))
+        print(round(div(), 5))
     elif CHOICE == 0:
         pass
     else:

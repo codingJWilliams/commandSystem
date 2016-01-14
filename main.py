@@ -3,8 +3,39 @@ import time
 import hashlib
 import json
 import mathslibrary
+
+
+#Below is where you assign commands, so you can easily add commands in the format demonstrated
+def commandAssignment(logit):
+    cmd = input("{0}>".format(logit))
+    if cmd.lower() == 'logout':
+        return True
+    elif cmd.lower() == 'exit':
+        exit
+    elif cmd.lower() == 'calc':
+        mathslibrary.calc()
+    elif cmd.lower() == 'adduser':
+        auth.adduser()
+    elif cmd.lower() == 'auth':
+        print("Logged in as {0}".format(auth.auth()))
+    elif cmd.lower() == 'help':
+        getHelp()
+    else:
+        print('Invalid command! Try typing \"help\"')
+
+
+
+
+# Body of program
+
 debug = True
 # A program designed to emulate a windows pc.
+def getHelp():
+    print(" +----+ [ Help Prompt ] +----+ ")
+    print("Authentication:")
+    print(" logout - Logs off so you can log in as another person")
+    print(" adduser - Adds a user to the login file so they can then log in.")
+    print(" auth - Shows a login prompt for testing purposes.")
 class auth():
     def auth():
         with open('logins.json') as f:    
@@ -51,20 +82,12 @@ def pc(frrun):
         #user is authed
         print("\nPlease enter a command!") 
         while True:
-            cmd = input("{0}>".format(login))
-            if cmd.lower() == 'logout':
+            if commandAssignment(login):
                 break
-            elif cmd.lower() == 'exit':
-                exit
-            elif cmd.lower() == 'calc':
-                mathslibrary.calc()
-            elif cmd.lower() == 'adduser':
-                auth.adduser()
-            else:
-                print('Invalid command! Try typing \"help\"')
     elif login is False:
         #user is not authed
-        print("Login Incorrect")
+        print("Login Insuccessful")
+        quit
 pc(1)
 while True:
     pc(0)
