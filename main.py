@@ -3,16 +3,20 @@ import time
 import hashlib
 import json
 import mathslibrary
+debug = True
 # A program designed to emulate a windows pc.
 class auth():
     def auth():
         with open('logins.json') as f:    
             s = f.readlines()[0]
             logins = json.loads(s)
+            if debug:
+                print("Logins = {0} at read".format(s))
             f.close()
         username = input(" +----+ Secure login prompt +----+\nUsername >")
         try:
             logins[username][1]
+            print("Got hash from DB")
         except KeyError:
             print("Incorrect username.\n +----+ [              ] +----+")
             return False
@@ -21,6 +25,7 @@ class auth():
         else:
             print("Username correct.")
             userpasshash = hashlib.sha256(str(input("Password >")).encode('utf-8')).hexdigest()
+            print("passhash = {0}".format(userpasshash))
             if userpasshash == logins[username][1]:
                 print(" +----+      Thank You!      +----+")
                 return logins[username][0]
@@ -34,7 +39,8 @@ class auth():
             f.close()
         print()
         username = input("Please choose a username!\nusername>")
-        logins[username] = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
+        logins[username] = [username]
+        logins[username][1] = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
         outfile = open("logins.json", "w")
         outfile.write(json.dumps(logins))
 def pc():
@@ -55,6 +61,6 @@ def pc():
                 print('Invalid command! Try typing \"help\"')
     elif login is False:
         #user is not authed
-        quit()
+        print("Login Incorrect")
 pc()
 
