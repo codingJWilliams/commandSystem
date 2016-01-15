@@ -4,8 +4,8 @@ import hashlib
 import json
 import mathslibrary
 import lottery
-
-
+import os
+import rnum
 #Below is where you assign commands, so you can easily add commands in the format demonstrated
 def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
@@ -16,6 +16,11 @@ def commandAssignment(logit):
     elif cmd.lower() == 'calc':
         try:
             mathslibrary.calc()
+        except:
+            print("error> Program crashed. Returning to prompt.")
+    elif cmd.lower() == 'randomnumber':
+        try:
+            rnum.rnum()
         except:
             print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'adduser':
@@ -51,12 +56,20 @@ def getHelp():
     print(" logout - Logs off so you can log in as another person")
     print(" adduser - Adds a user to the login file so they can then log in.")
     print(" auth - Shows a login prompt for testing purposes.")
-    print("Fun:")
-    print(" lottery - Runs the lottery program I coded a while back (github.com/codingJWilliams/lottery.git)")
+class Oopsy(Exception):
+    pass
 class auth():
     def auth():
-        with open('logins.json') as f:    
-            s = f.readlines()[0]
+        if not os.path.isfile("logins.json"):
+            print("error> logins.json is not found. To fix this, find instructions on my Git repo.\n\n\n")
+            raise Oopsy("\n\n\nlogins.json was not found in the same folder as main.py. Please rename one of the backups from logins_backup_name.json to logins.json.")
+            return False
+        with open('logins.json') as f:
+            try:
+                s = f.readlines()[0]
+            except IndexError:
+                print("error> logins.json is empty. Please restore from backup or follow instructions to fix it, which can be found on my Git Repo.\n\n\n")
+                quit()
             logins = json.loads(s)
             if debug:
                 print("Logins = {0} at read".format(s))
