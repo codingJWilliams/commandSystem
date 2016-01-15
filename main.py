@@ -51,6 +51,8 @@ def getHelp():
     print(" logout - Logs off so you can log in as another person")
     print(" adduser - Adds a user to the login file so they can then log in.")
     print(" auth - Shows a login prompt for testing purposes.")
+    print("Fun:")
+    print(" lottery - Runst he lottery program I coded a while back (github.com/codingJWilliams/lottery.git)")
 class auth():
     def auth():
         with open('logins.json') as f:    
