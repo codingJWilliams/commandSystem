@@ -43,11 +43,16 @@ def commandAssignment(logit):
             print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'help':
         getHelp()
-    elif cmd.lower() == 'lottery':
-        try:
-            lottery.mainProgram()
-        except:
-            print("error> Program crashed. Returning to prompt.")
+    elif 'lottery' in cmd.lower():
+        if cmd.lower().split(" ")[0] == 'lottery':
+            args = cmd.lower().split(" ")[1:]
+            if not len(args) == 1:
+                print("error> Please provide the username and password like \">lottery 1234567\"")
+                return
+            try:
+                lottery.mainProgram(args[0])
+            except:
+                print("error> Unknown")
     else:
         print('Invalid command! Try typing \"help\"')
 
