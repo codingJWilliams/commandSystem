@@ -11,7 +11,7 @@ def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
     if cmd.lower() == 'logout':
         return True
-    elif cmd.lower() == 'exit':
+    elif cmd.lower() == 'exit' or 'quit':
         return "exit"
     elif cmd.lower() == 'calc':
         try:
