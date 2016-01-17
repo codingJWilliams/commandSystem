@@ -11,6 +11,15 @@ def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
     if cmd.lower() == 'logout':
         return True
+    elif cmd.lower() == 'backup':
+        name = input("Please enter the backup name:\nbackup>")
+        with open('logins.json') as f:
+            s = f.readlines()[0]
+            logins = json.loads(s)
+            f.close()
+        outfile = open("logins_backup_{0}.json".format(name), "w")
+        outfile.write(json.dumps(logins))
+        outfile.close()
     elif cmd.lower() == 'exit':
         return "exit"
     elif cmd.lower() == 'calc':
@@ -50,9 +59,12 @@ def commandAssignment(logit):
                 print("error> Please provide the username and password like \">lottery 1234567\"")
                 return
             try:
-                lottery.mainProgram(args[0])
+                if lottery.mainProgram(args[0]):
+                    print("error> Too many, or invalid, numbers.")
+            except IndexError:
+                print("error> Please enter 7 numbers")
             except:
-                print("error> Unknown")
+                print("error> Unknown error in line 53.")
     else:
         print('Invalid command! Try typing \"help\"')
 
