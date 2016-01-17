@@ -24,15 +24,18 @@ def commandAssignment(logit):
         except:
             print("error> Program crashed. Returning to prompt.")
     elif 'adduser' in cmd.lower():
-        args = cmd.lower().split(" ")[1:]
-        if not len(args) == 2:
-            print("error> Please provide the username and password like \"adduser name pass\"")
-            return
-        try:
-            auth.adduser(args[0], args[1])
-            print("adduser> User {0} added.".format(args[0]))
-        except:
-            print("error> Unknown")
+        if cmd.lower().split(" ")[0] == 'adduser':
+            args = cmd.lower().split(" ")[1:]
+            if not len(args) == 2:
+                print("error> Please provide the username and password like \"adduser name pass\"")
+                return
+            try:
+                auth.adduser(args[0], args[1])
+                print("adduser> User {0} added.".format(args[0]))
+            except:
+                print("error> Unknown")
+        else:
+            print('Invalid command! Try typing \"help\"')
     elif cmd.lower() == 'auth':
         try:
             print("Logged in as {0}".format(auth.auth()))
