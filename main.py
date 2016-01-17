@@ -23,11 +23,16 @@ def commandAssignment(logit):
             rnum.rnum()
         except:
             print("error> Program crashed. Returning to prompt.")
-    elif cmd.lower() == 'adduser':
+    elif 'adduser' in cmd.lower():
+        args = cmd.lower().split(" ")[1:]
+        if not len(args) == 2:
+            print("error> Please provide the username and password like \"adduser name pass\"")
+            return
         try:
-            auth.adduser()
+            auth.adduser(args[0], args[1])
+            print("adduser> User {0} added.".format(args[0]))
         except:
-            print("error> Program crashed. Returning to prompt.")
+            print("error> Unknown")
     elif cmd.lower() == 'auth':
         try:
             print("Logged in as {0}".format(auth.auth()))
@@ -48,7 +53,7 @@ def commandAssignment(logit):
 
 # Body of program
 
-debug = False
+debug = True
 # A program designed to emulate a windows pc.
 def getHelp():
     print(" +----+ [ Help Prompt ] +----+ ")
@@ -95,14 +100,13 @@ class auth():
             else:
                 return False
         logins = {}
-    def adduser():
+    def adduser(username, password):
         with open('logins.json') as f:
             s = f.readlines()[0]
             logins = json.loads(s)
             f.close()
         print()
-        username = input("Please choose a username!\nusername>")
-        passwdhash = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
+        passwdhash = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
         logins[username] = [username, passwdhash]
         outfile = open("logins.json", "w")
         outfile.write(json.dumps(logins))
