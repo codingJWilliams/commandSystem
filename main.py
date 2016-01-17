@@ -58,9 +58,6 @@ def getHelp():
     print(" auth - Shows a login prompt for testing purposes.")
 class Oopsy(Exception):
     pass
-def argGetter(string):
-    splitted = string.split(" ")
-    return splitted[1:]
 class auth():
     def auth():
         if not os.path.isfile("logins.json"):
