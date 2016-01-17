@@ -1,3 +1,5 @@
+#iPad code test
+
 import random
 import time
 import hashlib
