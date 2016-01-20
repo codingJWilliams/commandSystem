@@ -1,5 +1,3 @@
-#iPad code test
-
 import random
 import time
 import hashlib
@@ -8,65 +6,38 @@ import mathslibrary
 import lottery
 import os
 import rnum
+import fileutils
 #Below is where you assign commands, so you can easily add commands in the format demonstrated
 def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
     if cmd.lower() == 'logout':
         return True
-    elif cmd.lower() == 'backup':
-        name = input("Please enter the backup name:\nbackup>")
-        with open('logins.json') as f:
-            s = f.readlines()[0]
-            logins = json.loads(s)
-            f.close()
-        outfile = open("logins_backup_{0}.json".format(name), "w")
-        outfile.write(json.dumps(logins))
-        outfile.close()
     elif cmd.lower() == 'exit':
         return "exit"
     elif cmd.lower() == 'calc':
-        try:
-            mathslibrary.calc()
-        except:
-            print("error> Program crashed. Returning to prompt.")
+        try: mathslibrary.calc()
+        except: print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'randomnumber':
-        try:
-            rnum.rnum()
-        except:
-            print("error> Program crashed. Returning to prompt.")
-    elif 'adduser' in cmd.lower():
-        if cmd.lower().split(" ")[0] == 'adduser':
-            args = cmd.lower().split(" ")[1:]
-            if not len(args) == 2:
-                print("error> Please provide the username and password like \"adduser name pass\"")
-                return
-            try:
-                auth.adduser(args[0], args[1])
-                print("adduser> User {0} added.".format(args[0]))
-            except:
-                print("error> Unknown")
-        else:
-            print('Invalid command! Try typing \"help\"')
+        try: rnum.rnum()
+        except: print("error> Program crashed. Returning to prompt.")
+    elif cmd.lower() == 'adduser':
+        try: auth.adduser()
+        except: print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'auth':
-        try:
-            print("Logged in as {0}".format(auth.auth()))
-        except:
-            print("error> Program crashed. Returning to prompt.")
+        try: print("Logged in as {0}".format(auth.auth()))
+        except: print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'help':
         getHelp()
-    elif 'lottery' in cmd.lower():
-        if cmd.lower().split(" ")[0] == 'lottery':
-            args = cmd.lower().split(" ")[1:]
-            if not len(args) == 1:
-                print("error> Please provide the username and password like \">lottery 1234567\"")
-                return
-            try:
-                if lottery.mainProgram(args[0]):
-                    print("error> Too many, or invalid, numbers.")
-            except IndexError:
-                print("error> Please enter 7 numbers")
-            except:
-                print("error> Unknown error in line 53.")
+    elif cmd.lower().split(" ")[0] == 'file':
+        if cmd.lower().split(" ")[1] == 'touch':
+            fileutils.touch(cmd.lower().split(" ")[2])
+        elif cmd.lower().split(" ")[1] == 'read':
+            fileutils.printFile(cmd.lower().split(" ")[2])
+    elif cmd.lower() == 'lottery':
+        try:
+            lottery.mainProgram()
+        except:
+            print("error> Program crashed. Returning to prompt.")
     else:
         print('Invalid command! Try typing \"help\"')
 
@@ -75,7 +46,7 @@ def commandAssignment(logit):
 
 # Body of program
 
-debug = True
+debug = False
 # A program designed to emulate a windows pc.
 def getHelp():
     print(" +----+ [ Help Prompt ] +----+ ")
@@ -122,13 +93,14 @@ class auth():
             else:
                 return False
         logins = {}
-    def adduser(username, password):
+    def adduser():
         with open('logins.json') as f:
             s = f.readlines()[0]
             logins = json.loads(s)
             f.close()
         print()
-        passwdhash = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
+        username = input("Please choose a username!\nusername>")
+        passwdhash = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
         logins[username] = [username, passwdhash]
         outfile = open("logins.json", "w")
         outfile.write(json.dumps(logins))
