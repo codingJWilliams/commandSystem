@@ -29,10 +29,23 @@ def commandAssignment(logit):
     elif cmd.lower() == 'help':
         getHelp()
     elif cmd.lower().split(" ")[0] == 'file':
-        if cmd.lower().split(" ")[1] == 'touch':
-            fileutils.touch(cmd.lower().split(" ")[2])
-        elif cmd.lower().split(" ")[1] == 'read':
-            fileutils.printFile(cmd.lower().split(" ")[2])
+        try:
+            if cmd.lower().split(" ")[1] == 'touch':
+                fileutils.touch(cmd.lower().split(" ")[2])
+            elif cmd.lower().split(" ")[1] == 'read':
+                fileutils.printFile(cmd.lower().split(" ")[2])
+            elif cmd.lower().split(" ")[1] == 'write':
+                fileutils.writeTo(cmd.lower().split(" ")[2], str.join(" ", cmd.lower().split(" ")[3:]))
+            elif cmd.lower().split(" ")[1] == 'del':
+                if os.path.isfile(cmd.lower().split(" ")[2]):
+                    os.remove(cmd.lower().split(" ")[2])
+                    print("file> removed {0}".format(cmd.lower().split(" ")[2]))
+                else:
+                    print("error> file does not exist")
+        except IndexError:
+            print("error> arguments")
+        except:
+            print("error> unknown")
     elif cmd.lower() == 'lottery':
         try:
             lottery.mainProgram()

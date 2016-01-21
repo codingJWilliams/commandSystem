@@ -13,7 +13,7 @@ def printFile(file):
     else:
         print("error> File does not exist. Use \"file touch {0}\" to create it.".format(file))
 def writeTo(file, string):
-    fObj = open(file, w)
+    fObj = open(file, "w")
     fObj.write(string)
-    fobj.close
+    fObj.close
     
