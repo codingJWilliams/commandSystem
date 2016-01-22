@@ -12,6 +12,15 @@ def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
     if cmd.lower() == 'logout':
         return True
+    elif cmd.lower() == 'backup':		
+        name = input("Please enter the backup name:\nbackup>")		
+        with open('logins.json') as f:		
+            s = f.readlines()[0]		
+            logins = json.loads(s)		
+            f.close()		
+        outfile = open("logins_backup_{0}.json".format(name), "w")		
+        outfile.write(json.dumps(logins))		
+        outfile.close()
     elif cmd.lower() == 'exit':
         return "exit"
     elif cmd.lower() == 'calc':
@@ -20,9 +29,16 @@ def commandAssignment(logit):
     elif cmd.lower() == 'randomnumber':
         try: rnum.rnum()
         except: print("error> Program crashed. Returning to prompt.")
-    elif cmd.lower() == 'adduser':
-        try: auth.adduser()
-        except: print("error> Program crashed. Returning to prompt.")
+    elif 'adduser' in cmd.lower():
+        if cmd.lower().split(" ")[0] == 'adduser':
+            args = cmd.lower().split(" ")[1:]
+            if not len(args) == 2:
+                print("error> Please provide the username and password like \"adduser name pass\"")
+                return
+            auth.adduser(args[0], args[1])
+            print("adduser> User {0} added.".format(args[0]))
+        else:
+            print('Invalid command! Try typing \"help\"')
     elif cmd.lower() == 'auth':
         try: print("Logged in as {0}".format(auth.auth()))
         except: print("error> Program crashed. Returning to prompt.")
@@ -73,7 +89,7 @@ class auth():
     def auth():
         if not os.path.isfile("logins.json"):
             print("error> logins.json is not found. To fix this, find instructions on my Git repo.\n\n\n")
-            raise Oopsy("\n\n\nlogins.json was not found in the same folder as main.py. Please rename one of the backups from logins_backup_name.json to logins.json.")
+            print("\n\n\nlogins.json was not found in the same folder as main.py. Please rename one of the backups you created or exit the program and follow the instructions on my git to make a new file")           
             return False
         with open('logins.json') as f:
             try:
@@ -106,14 +122,13 @@ class auth():
             else:
                 return False
         logins = {}
-    def adduser():
+    def adduser(username, password):
         with open('logins.json') as f:
             s = f.readlines()[0]
             logins = json.loads(s)
             f.close()
         print()
-        username = input("Please choose a username!\nusername>")
-        passwdhash = hashlib.sha256(str(input("Please choose a password!\npassword>")).encode('utf-8')).hexdigest()
+        passwdhash = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
         logins[username] = [username, passwdhash]
         outfile = open("logins.json", "w")
         outfile.write(json.dumps(logins))
