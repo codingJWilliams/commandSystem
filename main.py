@@ -12,13 +12,22 @@ def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
     if cmd.lower() == 'logout':
         return True
-    elif cmd.lower() == 'backup':		
+    elif cmd.lower() == 'backup':
         name = input("Please enter the backup name:\nbackup>")		
-        with open('logins.json') as f:		
+        with open('dependencies\\logins.json') as f:		
             s = f.readlines()[0]		
             logins = json.loads(s)		
             f.close()		
-        outfile = open("logins_backup_{0}.json".format(name), "w")		
+        outfile = open("dependencies\\logins_backup_{0}.json".format(name), "w")		
+        outfile.write(json.dumps(logins))		
+        outfile.close()
+    elif cmd.lower() == 'restore':
+        name = input("Please enter the backup name:\nrestore>")		
+        with open('dependencies\\logins_backup_{0}.json'.format(name)) as f:		
+            s = f.readlines()[0]		
+            logins = json.loads(s)		
+            f.close()		
+        outfile = open("dependencies\\logins.json", "w")		
         outfile.write(json.dumps(logins))		
         outfile.close()
     elif cmd.lower() == 'exit':
@@ -37,8 +46,7 @@ def commandAssignment(logit):
                 return
             auth.adduser(args[0], args[1])
             print("adduser> User {0} added.".format(args[0]))
-        else:
-            print('Invalid command! Try typing \"help\"')
+        else: print('Invalid command! Try typing \"help\"')
     elif cmd.lower() == 'auth':
         try: print("Logged in as {0}".format(auth.auth()))
         except: print("error> Program crashed. Returning to prompt.")
@@ -58,15 +66,11 @@ def commandAssignment(logit):
                     print("file> removed {0}".format(cmd.lower().split(" ")[2]))
                 else:
                     print("error> file does not exist")
-        except IndexError:
-            print("error> arguments")
-        except:
-            print("error> unknown")
+        except IndexError: print("error> arguments")
+        except: print("error> unknown")
     elif cmd.lower() == 'lottery':
-        try:
-            lottery.mainProgram()
-        except:
-            print("error> Program crashed. Returning to prompt.")
+        try: lottery.mainProgram()
+        except: print("error> Program crashed. Returning to prompt.")
     else:
         print('Invalid command! Try typing \"help\"')
 
@@ -87,11 +91,11 @@ class Oopsy(Exception):
     pass
 class auth():
     def auth():
-        if not os.path.isfile("logins.json"):
+        if not os.path.isfile("dependencies\\logins.json"):
             print("error> logins.json is not found. To fix this, find instructions on my Git repo.\n\n\n")
             print("\n\n\nlogins.json was not found in the same folder as main.py. Please rename one of the backups you created or exit the program and follow the instructions on my git to make a new file")           
             return False
-        with open('logins.json') as f:
+        with open('dependencies\\logins.json') as f:
             try:
                 s = f.readlines()[0]
             except IndexError:
@@ -123,14 +127,14 @@ class auth():
                 return False
         logins = {}
     def adduser(username, password):
-        with open('logins.json') as f:
+        with open('dependencies\\logins.json') as f:
             s = f.readlines()[0]
             logins = json.loads(s)
             f.close()
         print()
         passwdhash = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
         logins[username] = [username, passwdhash]
-        outfile = open("logins.json", "w")
+        outfile = open("dependencies\\logins.json", "w")
         outfile.write(json.dumps(logins))
 def pc(frrun):
     if frrun == 1:
