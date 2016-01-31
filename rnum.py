@@ -8,7 +8,7 @@ def rnum():
         if results == 1:
             print("Yay! I got it! That's so cool! Your number was {0}".format(rnum))
             break
-        elif results == 2: maxmin[0] = rnum
-        elif results == 3: maxmin[1] = rnum
+        elif results == 2: maxmin[0] = rnum-1
+        elif results == 3: maxmin[1] = rnum+1
         else: print("You silly boy or girl. That isn't an option, is it?")
         

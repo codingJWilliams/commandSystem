@@ -7,6 +7,13 @@ import lottery
 import os
 import rnum
 import fileutils
+perms = {
+    'jay' : 'root',
+    'test' : 'admin',
+    'user' : 'root',
+    'default' : 'root'
+    }
+    
 #Below is where you assign commands, so you can easily add commands in the format demonstrated
 def commandAssignment(logit):
     cmd = input("{0}>".format(logit))
@@ -45,13 +52,17 @@ def commandAssignment(logit):
                 print("error> Please provide the username and password like \"adduser name pass\"")
                 return
             auth.adduser(args[0], args[1])
-            print("adduser> User {0} added.".format(args[0]))
         else: print('Invalid command! Try typing \"help\"')
     elif cmd.lower() == 'auth':
         try: print("Logged in as {0}".format(auth.auth()))
         except: print("error> Program crashed. Returning to prompt.")
     elif cmd.lower() == 'help':
         getHelp()
+    elif cmd.lower().split(" ")[0] == 'exec':
+        print("note> Due to security issues admin access is needed.")
+        autheduser = auth.auth()
+        if perms[autheduser] == 'root':
+            exec(input("exec>"))
     elif cmd.lower().split(" ")[0] == 'file':
         try:
             if cmd.lower().split(" ")[1] == 'touch':
@@ -66,6 +77,16 @@ def commandAssignment(logit):
                     print("file> removed {0}".format(cmd.lower().split(" ")[2]))
                 else:
                     print("error> file does not exist")
+        except:
+            print("error>")
+    elif cmd.lower().split(" ")[0] == 'perm':
+        try:
+            if cmd.lower().split(" ")[1] == 'sudo':
+                print("sudo> Will temporariy set you to root access. Will not be effective if you are already root\n\nNOTE>>THIS WILL ALLOW THE USER COMPLETE ACCESS TO ALL FUNCTIONS")
+                if perms[auth.auth()] == 'root':
+                    perms[logit] = 'root'
+                else:
+                    print("error>You have to get someone who is root to grant you root access")
         except IndexError: print("error> arguments")
         except: print("error> unknown")
     elif cmd.lower() == 'lottery':
@@ -127,15 +148,33 @@ class auth():
                 return False
         logins = {}
     def adduser(username, password):
-        with open('dependencies\\logins.json') as f:
-            s = f.readlines()[0]
-            logins = json.loads(s)
-            f.close()
-        print()
-        passwdhash = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
-        logins[username] = [username, passwdhash]
-        outfile = open("dependencies\\logins.json", "w")
-        outfile.write(json.dumps(logins))
+        if username in perms:
+            print("error> That user is totally untouchable. Prove you can access them by logging in as root.")
+            userAuthed = auth.auth()
+            try:
+                if perms[userAuthed] == 'root':
+                    continueProgram = 1
+                else:
+                    print("privelages> Your privalege level is currently not high enough.")
+                    continueProgram = 0
+            except KeyError:
+                continueProgram = 0
+                print("privelages> Your privalege level is currently not high enough.")
+        else:
+            continueProgram = 1
+        if continueProgram == 1:
+            with open('dependencies\\logins.json') as f:
+                s = f.readlines()[0]
+                logins = json.loads(s)
+                f.close()
+            print()
+            passwdhash = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
+            logins[username] = [username, passwdhash]
+            outfile = open("dependencies\\logins.json", "w")
+            outfile.write(json.dumps(logins))
+            print("adduser> User {0} added.".format(username))
+        else:
+            print("privelages> Did not run command \"adduser\" due to privelage error")
 def pc(frrun):
     if frrun == 1:
         print("Welcome to this computer-style program. \n\n\n")
@@ -156,4 +195,3 @@ def pc(frrun):
 pc(1)
 while True:
     pc(0)
-
