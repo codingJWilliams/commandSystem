@@ -7,6 +7,11 @@ import lottery
 import os
 import rnum
 import fileutils
+# This is just a test
+
+#Really
+
+# Im not lying, I swear!!!
 perms = {
     'jay' : 'root',
     'test' : 'admin',
